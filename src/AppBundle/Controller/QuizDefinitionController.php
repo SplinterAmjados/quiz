@@ -209,6 +209,7 @@ class QuizDefinitionController extends Controller
                 if (!$exist){
                     $newAffectation = new CandidateQuiz();
                     $newAffectation->setCandidate($sc)
+                        ->setStatus('waiting')
                         ->setQuiz($quiz);
                     $em->persist(clone $newAffectation);
                 }

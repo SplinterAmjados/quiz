@@ -46,9 +46,9 @@ class Responsible extends  User
 
     public function getRoles(){
         if ($this->isAdmin){
-            return ['ROLE_USER','ROLE_RESPONSIBLE'];
+            return ['ROLE_USER','ROLE_RESPONSIBLE','ROLE_ADMIN'];
         }else{
-            return ['ROLE_USER'];
+            return ['ROLE_USER','ROLE_RESPONSIBLE'];
         }
     }
 

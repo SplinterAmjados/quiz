@@ -27,14 +27,27 @@ class QuizController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/phase_init/{quiz}",name="phase_init")
      */
-    public function startQuizAction(CandidateQuiz $quiz){
+    public function initQuizAction(CandidateQuiz $quiz)
+    {
 
         //@Todo vrification
 
-        return $this->render("@App/Candidate/Quiz/init.html.twig",array(
+        return $this->render("@App/Candidate/Quiz/init.html.twig", array(
             'quiz' => $quiz
         ));
+    }
 
+    /**
+     * @param CandidateQuiz $quiz
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/start_quiz/{quiz}",name="start_quiz")
+     */
+    public function startQuizAction(CandidateQuiz $quiz)
+    {
+
+        $this->get('app.candidate.quiz.service')->startQuiz($quiz);
+
+        return $this->render("@App/Candidate/Quiz/quiz_question.html.twig", array('quiz' => $quiz));
     }
 
 }

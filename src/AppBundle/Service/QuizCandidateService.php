@@ -10,6 +10,7 @@ namespace AppBundle\Service;
 
 
 use AppBundle\Entity\Candidate;
+use AppBundle\Entity\Quiz\CandidateQuiz;
 use AppBundle\Entity\Quiz\Quiz;
 use Doctrine\ORM\EntityManager;
 
@@ -40,31 +41,57 @@ class QuizCandidateService
 
     }
 
-    public function startQuiz(Candidate $candidate,Quiz $quiz){
+    public function startQuiz(CandidateQuiz $quiz){
+
+        if ($quiz->getStatus() == 'waiting'){
+
+            $allQuestions = $quiz->getQuiz()->getQuestions();
+
+            $keys = $allQuestions->getKeys();
+            var_dump($keys);
+
+            $q = $allQuestions->get(2);
+
+            $allQuestions->remove(2);
+            $keys = $allQuestions->getKeys();
+            var_dump($keys);
+
+            $i=1;
+            while ($i <= $quiz->getQuiz()->getQuestionsNumber() && $allQuestions->count()>0){
+
+                $keys = $allQuestions->getKeys();
+
+
+                $i++;
+            }
+
+
+            $quiz->setStartDate(new \DateTime('NOW'));
+        }
 
     }
 
-    public function finishQuiz(Candidate $candidate,Quiz $quiz){
+    public function finishQuiz(CandidateQuiz $quiz){
 
     }
 
-    public function remainingTimeForQuiz(Candidate $candidate,Quiz $quiz){
+    public function remainingTimeForQuiz(CandidateQuiz $quiz){
 
     }
 
-    public function checkQuizIsFinished(Candidate $candidate,Quiz $quiz){
+    public function checkQuizIsFinished(CandidateQuiz $quiz){
 
     }
 
-    public function goToNextQuestion(Candidate $candidate,Quiz $quiz){
+    public function goToNextQuestion(CandidateQuiz $quiz){
 
     }
 
-    public function goToPreviousQuestion(Candidate $candidate,Quiz $quiz){
+    public function goToPreviousQuestion(CandidateQuiz $quiz){
 
     }
 
-    public function getCurrentQuestion(Candidate $candidate,Quiz $quiz){
+    public function getCurrentQuestion(CandidateQuiz $quiz){
 
     }
 
