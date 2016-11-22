@@ -1,0 +1,38 @@
+{% extends ':default:index.html.twig' %}
+
+ {% block top_header %}
+
+ {% endblock %}
+
+{% block main_body %}
+
+    <h2>Liste des quiz disponibles</h2>
+
+    <table class="table table-bordered table-hover table-striped" width="100%">
+        <thead>
+        <tr>
+            <th>Quiz</th>
+            <th>Etat</th>
+            <th width="200px">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for q in quiz %}
+            <tr>
+                <td>{{ q.quiz.name }}</td>
+                <td>{{ q.status }}</td>
+                <td>
+                    {% if q.status == 'waiting' %}
+                        <a href="{{ path('phase_init',{'quiz':q.id}) }}">Démarrer</a>
+                    {% elseif q.status == 'pending' %}
+                        <a href="#">Reprendre</a>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

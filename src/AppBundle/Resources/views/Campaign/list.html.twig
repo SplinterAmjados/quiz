@@ -1,0 +1,78 @@
+{% extends '@App/Campaign/index.html.twig' %}
+
+{% block title %}
+    Liste des campagnes
+{% endblock %}
+
+{% block top_right_block %}
+    {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn btn-primary"  href="{{ path('add_campaign') }}"><span class="glyphicon glyphicon-plus-sign"></span> Ajouter</a>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    <table id="campaigns-table" class="table table-bordered table-hover table-striped table-responsive" width="100%">
+        <thead>
+        <tr>
+            <th>Ref</th>
+            <th>Session</th>
+            <th>Ecole(s)</th>
+            <th>Date</th>
+            <th>Statut</th>
+            <th>Inscrits</th>
+            <th>Retenus</th>
+            <th>En attente</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for c in campaigns %}
+            <tr>
+                <td>{{ c.name }}</td>
+                <td>{{ c.session.name }}</td>
+                <td>
+                    {% for e in c.universities %}
+                        {{ e.name }},
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ c.date|date('d/m/Y') }}
+                </td>
+                <td>
+                    {{ c.status }}
+                </td>
+                <td>
+                    {{ c|registrationsCount }}
+                </td>
+                <td>
+                    {{ c|acceptedCount }}
+                </td>
+                <td>
+                    {{ c|waitingCount }}
+                </td>
+                <td>
+                    <a href="{{ path('evaluations_campaign',{'campaign':c.id}) }}" class="btn btn-primary"><span
+                                class="glyphicon glyphicon-eye-open"></span> Afficher</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function(){
+            initSimpleDataTable('#campaigns-table',{
+                "columnDefs": [ {
+                    "targets": 8,
+                    "orderable": false
+                } ]
+            });
+        });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,294 @@
+{% extends '@App/Campaign/index.html.twig' %}
+
+{% block title %}
+    Evaluations pour la campagne {{ campaign.name }}
+{% endblock %}
+
+{% block top_right_block %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="param-campaign-icon">
+            <a href="{{ path('edit_campaign',{"campaign":campaign.id}) }}"><span class="glyphicon glyphicon-cog"></span></a>
+        </div>
+
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li>
+        <a href="#">Evaluations</a>
+    </li>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .comment {
+            font-size: 11px;
+            color: grey;
+            text-align: left;
+        }
+
+        .score {
+            font-weight: bold;
+        }
+
+        .score.score-c {
+            color: red;
+        }
+
+        .score.score-b {
+            color: darkorange;
+        }
+
+        .score.score-a {
+            color: green;
+        }
+
+        .status.status-reject {
+            color: red;
+        }
+
+        .status.status-ok {
+            color: green;
+        }
+
+        .status.status-waiting {
+            color: darkorange;
+        }
+
+        .project {
+            display: block;
+            font-size: 11px;
+            color: grey;
+        }
+
+        .param-campaign-icon {
+            font-size: 25px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="filter-zone">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-filter"></span> Filtres
+            </div>
+            <div class="panel-body">
+                <form id="delivery-filter-form">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label for="status" class="control-label">Statut</label>
+                                <select multiple="multiple" id="status" data-placeholder="Filtrer par statut">
+                                    <option value="accepted">Retenu</option>
+                                    <option value="waiting">En attente</option>
+                                    <option value="rejected">Non retenu</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <input id="automatic-refresh" type="checkbox"> <label for="automatic-refresh">Rafraichissement
+                automatique</label>
+        </div>
+        <div class="col-xs-6" style="text-align: right;padding-right: 20px; margin-bottom: 10px;">
+            <button download-excel-link="{{ path('evaluations_export_excel',{'campaign':campaign.id}) }}" id="download-excel-btn" class="btn btn-default" >
+                <img style="width: 35px;" src="{{ asset('bundles/app/images/xls-icon-128x128.png') }}"> Exporter
+            </button>
+        </div>
+    </div>
+
+    <table id="evaluations" class="table table-bordered table-hover table-striped table-responsive" width="100%">
+        <thead>
+        <tr>
+            <th>Nom & Prénom</th>
+            <th>Quiz 1</th>
+            <th>Quiz 2</th>
+            <th>Note RH</th>
+            <th>R. RH</th>
+            <th>Note Tech.</th>
+            <th>R. Tech.</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for e in evaluations %}
+            <tr status="{{ e.status }}">
+                <td>{{ e.candidate.fullName }}
+                    {% if e.isAbsent == true %}
+                        {% set isAbsent = true %}
+                        <span class="badge" style="background-color: #ff0000; color : white;">Absent</span>
+                    {% else %}
+                        {% set isAbsent = false %}
+                    {% endif %}
+                </td>
+                <td style="text-align: center;">{{ e.remoteQuizzScore }} %</td>
+                <td style="text-align: center;">{{ e.localQuizzScore }} %</td>
+                <td style="text-align: center;">
+                    {{ e.rhScore|score|raw }}
+                    {% if e.rhComment is not null and e.rhComment|trim != '' %}
+                        <div class="comment">
+                            ({{ e.rhComment }})
+                        </div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if e.rhResponsible is not null %}
+                        {{ e.rhResponsible.fullName }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td style="text-align: center;">
+                    {{ e.technicalScore|score|raw }}
+                    {% if e.technicalComment is not null and e.technicalComment|trim != '' %}
+                        <div class="comment">
+                            ({{ e.technicalComment }})
+                        </div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if e.rhResponsible is not null %}
+                        {{ e.rhResponsible.fullName }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {{ e|status|raw }}
+                    {{ e|project|raw }}
+                </td>
+                <td>
+                    <button class="btn btn-primary evaluate-btn"
+                            data-href="{{ path('evaluate',{'evaluation':e.id}) }}">
+                        <span class="glyphicon glyphicon-star"></span> Evaluer
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- MODAL -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="evaluation-sheet-modal">
+        <div class="modal-dialog" role="document" style="width: 95%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Fiche d'évaluation</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="loading">
+                        <img style="width: 100px; display: block; margin: 20px auto;"
+                             src="{{ asset('bundles/app/images/ajax_loader_metal_512.gif') }}">
+                    </div>
+                    <div class="content">
+
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var dataTable = null;
+
+        function refreshDataTable() {
+            var status = $('#status').val();
+            $.fn.dataTable.ext.search.pop();
+            if (status.length > 0) {
+                $.fn.dataTable.ext.search.push(
+                        function (settings, data, dataIndex) {
+                            return ( $.inArray($(dataTable.row(dataIndex).node()).attr('status'), status) >= 0 );
+                        }
+                );
+            }
+            dataTable.draw();
+        }
+        $(function () {
+
+            dataTable = initSimpleDataTable('#evaluations', {
+                "columnDefs": [{
+                    "targets": 8,
+                    "orderable": false
+                }],
+                pageLength: 100
+            });
+
+            $('.evaluate-btn').on('click', function () {
+                var url = $(this).attr('data-href');
+                $('#evaluation-sheet-modal .modal-body .content').html('');
+                $('#evaluation-sheet-modal').modal('show');
+                $('#evaluation-sheet-modal .modal-body .loading').show();
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (data) {
+                        $('#evaluation-sheet-modal .modal-body .loading').hide();
+                        $('#evaluation-sheet-modal .modal-body .content').html(data.content);
+                    }
+                })
+            });
+
+            setInterval(function () {
+                if ($('#evaluation-sheet-modal').is(':visible') == false &&
+                        $('#automatic-refresh').is(':checked') &&
+                        $.cookie('automatic-refresh') == '1') {
+                    window.location.reload();
+                }
+            }, 30000);
+
+            $('#automatic-refresh').on('change', function () {
+                if ($('#automatic-refresh').is(':checked')) {
+                    $.cookie('automatic-refresh', '1');
+                } else {
+                    $.cookie('automatic-refresh', '0');
+                }
+            });
+
+            if ($.cookie('automatic-refresh') == undefined) {
+                $.cookie('automatic-refresh', '1');
+            }
+
+            if ($.cookie('automatic-refresh') == '1') {
+                $('#automatic-refresh').prop('checked', 'checked');
+            }
+
+            $('#status').selectize({
+                plugins: ['remove_button']
+            });
+
+            $('#status').on('change', function () {
+                refreshDataTable();
+            });
+
+            $('#download-excel-btn').on('click',function(){
+                var status = $('#status').val();
+                var statusPrams = '';
+                if (status.length>0){
+                    statusPrams = '?status='+status.join(',');
+                }
+                window.location.href = $(this).attr('download-excel-link')+statusPrams;
+            });
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends '@App/Candidate/index.html.twig' %}
+
+{% block main_body %}
+
+    <p>
+        Ce quiz contient {{ quiz.quiz.questionsNumber }} questions <br>
+        Vous avez <b>{{ (quiz.quiz.time/60)|round(0,'floor') }} minutes et {{ quiz.quiz.time%60 }} secondes</b> pour passer ce Quiz.<br>
+    </p>
+    <br>
+    <a>Démarrer le Quiz</a>
+
+{% endblock %}

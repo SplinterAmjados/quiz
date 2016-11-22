@@ -1,0 +1,63 @@
+{% extends '@App/QuizDefinition/index.html.twig' %}
+
+ {% block sub_nab_bar %}
+     {% include '@App/QuizDefinition/sub_nav_bar.html.twig' with {'subCurrentTab' : 'quizz'} %}
+ {% endblock %}
+
+{% block quiz_main_container %}
+
+    {% if edit %}
+        <h2>Modifier le Quiz</h2>
+    {% else %}
+        <h2>Créer un Quiz</h2>
+    {% endif %}
+
+    {{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-xs-12 col-md-3">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col-xs-12 col-md-2">
+            {{ form_row(form.time) }}
+        </div>
+        <div class="col-xs-12 col-md-2">
+            {{ form_row(form.questionsNumber) }}
+        </div>
+        <div class="col-xs-12 col-md-2">
+            {{ form_row(form.quizSession) }}
+        </div>
+        <div class="col-xs-12 col-md-3">
+            {{ form_row(form.campaign) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            {{ form_row(form.questions) }}
+        </div>
+    </div>
+
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-4 col-sm-offset-8 col-md-2 col-md-offset-10">
+            <button type="submit" class="btn btn-success btn-block">
+                <span class="glyphicon glyphicon-ok"></span> Enregistrer
+            </button>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(function () {
+            $('#appbundle_quiz_quiz_questions').multiSelect();
+        })
+    </script>
+{% endblock %}

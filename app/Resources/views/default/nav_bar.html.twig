@@ -1,0 +1,20 @@
+{% if currentTab is not defined %}
+    {% set currentTab = '' %}
+{% endif %}
+
+<ul class="nav navbar-nav navbar-right">
+    {% if is_granted('ROLE_ADMIN') %}
+        <li class="{% if currentTab == 'quiz_admin' %} active {% endif %}">
+            <a href="{{ path('quiz_definition_index') }}"><span class="glyphicon glyphicon-list-alt"></span> Quiz</a>
+        </li>
+        <li class="{% if currentTab == 'subjects' %} active {% endif %}">
+            <a href="{{ path('subject_index') }}"><span class="glyphicon glyphicon-align-left"></span> Sujets</a>
+        </li>
+    {% endif %}
+    <li class="{% if currentTab == 'campaigns' %} active {% endif %}">
+        <a href="{{ path('list_campaign') }}"><span class="glyphicon glyphicon-th-list"></span> Campagnes</a>
+    </li>
+    <li>
+        <a href="{{ path('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a>
+    </li>
+</ul>

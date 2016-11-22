@@ -1,0 +1,345 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Evaluation
+ *
+ * @ORM\Table(name="evaluation")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EvaluationRepository")
+ */
+class Evaluation
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="remoteQuizzScore", type="float",nullable=true)
+     */
+    private $remoteQuizzScore;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="localQuizzScore", type="float",nullable=true)
+     */
+    private $localQuizzScore;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="rhScore", type="float",nullable=true)
+     */
+    private $rhScore;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="technicalScore", type="float",nullable=true)
+     */
+    private $technicalScore;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rhComment", type="text",nullable=true)
+     */
+    private $rhComment;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="technicalComment", type="text",nullable=true)
+     */
+    private $technicalComment;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="is_absent",type="boolean",nullable=true)
+     */
+    private $isAbsent = false;
+
+    /**
+     * @var Candidate
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Candidate")
+     */
+    private $candidate;
+
+    /**
+     * @var Campaign
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Campaign",inversedBy="evaluations")
+     */
+    private $campaign;
+
+    /**
+     * @var Responsible
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Responsible")
+     */
+    private $rhResponsible;
+
+    /**
+     * @var Responsible
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Responsible")
+     */
+    private $technicalResponsible;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set remoteQuizzScore
+     *
+     * @param float $remoteQuizzScore
+     *
+     * @return Evaluation
+     */
+    public function setRemoteQuizzScore($remoteQuizzScore)
+    {
+        $this->remoteQuizzScore = $remoteQuizzScore;
+
+        return $this;
+    }
+
+    /**
+     * Get remoteQuizzScore
+     *
+     * @return float
+     */
+    public function getRemoteQuizzScore()
+    {
+        return $this->remoteQuizzScore;
+    }
+
+    /**
+     * Set localQuizzScore
+     *
+     * @param float $localQuizzScore
+     *
+     * @return Evaluation
+     */
+    public function setLocalQuizzScore($localQuizzScore)
+    {
+        $this->localQuizzScore = $localQuizzScore;
+
+        return $this;
+    }
+
+    /**
+     * Get localQuizzScore
+     *
+     * @return float
+     */
+    public function getLocalQuizzScore()
+    {
+        return $this->localQuizzScore;
+    }
+
+    /**
+     * Set rhScore
+     *
+     * @param float $rhScore
+     *
+     * @return Evaluation
+     */
+    public function setRhScore($rhScore)
+    {
+        $this->rhScore = $rhScore;
+
+        return $this;
+    }
+
+    /**
+     * Get rhScore
+     *
+     * @return float
+     */
+    public function getRhScore()
+    {
+        return $this->rhScore;
+    }
+
+    /**
+     * Set technicalScore
+     *
+     * @param float $technicalScore
+     *
+     * @return Evaluation
+     */
+    public function setTechnicalScore($technicalScore)
+    {
+        $this->technicalScore = $technicalScore;
+
+        return $this;
+    }
+
+    /**
+     * Get technicalScore
+     *
+     * @return float
+     */
+    public function getTechnicalScore()
+    {
+        return $this->technicalScore;
+    }
+
+    /**
+     * Set rhComment
+     *
+     * @param string $rhComment
+     *
+     * @return Evaluation
+     */
+    public function setRhComment($rhComment)
+    {
+        $this->rhComment = $rhComment;
+
+        return $this;
+    }
+
+    /**
+     * Get rhComment
+     *
+     * @return string
+     */
+    public function getRhComment()
+    {
+        return $this->rhComment;
+    }
+
+    /**
+     * Set technicalComment
+     *
+     * @param string $technicalComment
+     *
+     * @return Evaluation
+     */
+    public function setTechnicalComment($technicalComment)
+    {
+        $this->technicalComment = $technicalComment;
+
+        return $this;
+    }
+
+    /**
+     * Get technicalComment
+     *
+     * @return string
+     */
+    public function getTechnicalComment()
+    {
+        return $this->technicalComment;
+    }
+
+    /**
+     * Set candidate
+     *
+     * @param Candidate $candidate
+     *
+     * @return Evaluation
+     */
+    public function setCandidate(Candidate $candidate = null)
+    {
+        $this->candidate = $candidate;
+
+        return $this;
+    }
+
+    /**
+     * Get candidate
+     *
+     * @return Candidate
+     */
+    public function getCandidate()
+    {
+        return $this->candidate;
+    }
+
+    /**
+     * Set campaign
+     *
+     * @param Campaign $campaign
+     *
+     * @return Evaluation
+     */
+    public function setCampaign(Campaign $campaign = null)
+    {
+        $this->campaign = $campaign;
+
+        return $this;
+    }
+
+    /**
+     * Get campaign
+     *
+     * @return Campaign
+     */
+    public function getCampaign()
+    {
+        return $this->campaign;
+    }
+
+    /**
+     * Set rhResponsible
+     *
+     * @param Responsible $rhResponsible
+     *
+     * @return Evaluation
+     */
+    public function setRhResponsible(Responsible $rhResponsible = null)
+    {
+        $this->rhResponsible = $rhResponsible;
+
+        return $this;
+    }
+
+    /**
+     * Get rhResponsible
+     *
+     * @return Responsible
+     */
+    public function getRhResponsible()
+    {
+        return $this->rhResponsible;
+    }
+
+    /**
+     * Set technicalResponsible
+     *
+     * @param Responsible $technicalResponsible
+     *
+     * @return Evaluation
+     */
+    public function setTechnicalResponsible(Responsible $technicalResponsible = null)
+    {
+        $this->technicalResponsible = $technicalResponsible;
+
+        return $this;
+    }
+
+    /**
+     * Get technicalResponsible
+     *
+     * @return Responsible
+     */
+    public function getTechnicalResponsible()
+    {
+        return $this->technicalResponsible;
+    }
+}

@@ -1,0 +1,43 @@
+{% extends '@App/Subject/index.html.twig' %}
+
+{% block title %}
+    {% if edit %}
+        Modifier le sujet
+    {% else %}
+        Ajouter un sujet
+    {% endif %}
+
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-xs-12 col-sm4">
+            {{ form_row(form.ref) }}
+        </div>
+        <div class="col-xs-12 col-sm4">
+            {{ form_row(form.title) }}
+        </div>
+        <div class="col-xs-12 col-sm4">
+            {{ form_row(form.session) }}
+        </div>
+        <div class="col-xs-12 col-sm4">
+            {{ form_row(form.places) }}
+        </div>
+        <div class="col-xs-12 col-sm4">
+            {{ form_row(form.description) }}
+        </div>
+        <div class="col-xs-12 col-sm4">
+            {{ form_row(form.technologies) }}
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-4 col-sm-offset-8 col-md-2 col-md-offset-10">
+            <button type="submit" class="btn btn-success btn-block">
+                <span class="glyphicon glyphicon-ok"></span> Enregistrer
+            </button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

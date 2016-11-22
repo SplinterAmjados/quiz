@@ -1,0 +1,30 @@
+{% extends 'default/index.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li>
+        <a href="{{ path('quiz_definition_index') }}">Quizz</a>
+    </li>
+{% endblock %}
+
+{% set currentTab = 'quiz' %}
+
+{% block body %}
+
+    <style>
+        #quiz-main-container {
+            padding: 25px;
+            border: solid 1px #dddddd;
+            border-top : none;
+        }
+    </style>
+
+    {% block sub_nab_bar %}
+
+    {% endblock %}
+    <div id="quiz-main-container">
+        {% block quiz_main_container %}
+        {% endblock %}
+    </div>
+
+{% endblock %}

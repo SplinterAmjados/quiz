@@ -1,0 +1,10 @@
+{% extends 'default/index.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li>
+        <a href="{{ path('list_campaign') }}">Campagnes</a>
+    </li>
+{% endblock %}
+
+{% set currentTab = 'campaigns' %}

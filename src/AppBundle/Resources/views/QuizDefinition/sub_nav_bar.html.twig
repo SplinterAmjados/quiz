@@ -1,0 +1,6 @@
+<ul class="nav nav-tabs">
+    <li role="presentation" class="{% if subCurrentTab == 'quizz' %} active {% endif %}"><a href="{{ path('quiz_definition_index') }}">Quizz</a>
+    </li>
+    <li role="presentation" class="{% if subCurrentTab == 'questions' %} active {% endif %}"><a href="{{ path('question_list') }}">Questions</a>
+    </li>
+</ul>

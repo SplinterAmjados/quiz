@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title_site %}Suivi des entretiens{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('node_modules/jquery-ui-dist/jquery-ui.min.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('node_modules/selectize/dist/css/selectize.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('node_modules/selectize/dist/css/selectize.default.css') }}"/>
+        <link href="{{ asset('node_modules/multiselect/css/multi-select.css') }}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css"
+              href="{{ asset('node_modules/datatables.net-dt/css/jquery.dataTables.css') }}"/>
+        <style>
+            .btn, body{
+                font-size: 12px;
+            }
+             .ms-container {
+                 width: 100%;
+             }
+        </style>
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('bundles/app/images/logo-talan-retina.png') }}"/>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <img style="height: 50px;" src="{{ asset('bundles/app/images/logo-talan-retina.png') }}">
+        {% block top_header %}
+        {% endblock %}
+    </div>
+</nav>
+
+<div class="container-fluid">
+    {% block main_body %}
+
+
+    {% endblock %}
+</div>
+
+{% block javascripts %}
+    <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('node_modules/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('node_modules/datatables.net/js/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('node_modules/jquery.cookie/jquery.cookie.js') }}"></script>
+    <script src="{{ asset('node_modules/selectize/node_modules/microplugin/src/microplugin.js') }}"></script>
+    <script src="{{ asset('node_modules/selectize/node_modules/sifter/sifter.min.js') }}"></script>
+    <script src="{{ asset('node_modules/selectize/dist/js/selectize.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/toolbox.js') }}"></script>
+    <script src="{{ asset('node_modules/multiselect/js/jquery.multi-select.js') }}"></script>
+{% endblock %}
+</body>
+</html>

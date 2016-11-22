@@ -1,0 +1,65 @@
+{% extends 'default/index.html.twig' %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li>
+        <a href="#">Sujets</a>
+    </li>
+{% endblock %}
+
+{% set currentTab = 'subjects' %}
+
+{% block top_right_block %}
+    <a href="{{ path('add_edit_project') }}" class="btn btn-primary"> <span class="glyphicon glyphicon-plus"></span>
+        Nouveau sujet</a>
+{% endblock %}
+
+{% block title %}
+Liste des sujets
+{% endblock %}
+
+{% block body %}
+
+    <table id="subjectTables" class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr>
+            <th>Réf</th>
+            <th>Titre</th>
+            <th>Nombre de places</th>
+            <th>Session</th>
+            <th width="100px;">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for s in subjects %}
+            <tr>
+                <td>{{ s.ref }}</td>
+                <td>{{ s.title }}</td>
+                <td>{{ s.places }}</td>
+                <td>{{ s.session.name }}</td>
+                <td>
+                    <a href="{{ path('add_edit_project',{"project" :s.id}) }}" class="btn btn-primary"> <span
+                                class="glyphicon glyphicon-edit"></span>
+                        Modifier</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            initSimpleDataTable('#subjectTables', {
+                "columnDefs": [{
+                    "targets": 4,
+                    "orderable": false
+                }]
+            });
+        });
+
+    </script>
+{% endblock %}

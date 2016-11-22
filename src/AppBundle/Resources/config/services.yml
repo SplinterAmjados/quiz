@@ -1,0 +1,20 @@
+services:
+    app.evaluation.extension:
+        class: AppBundle\Twig\EvaluationExtension
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
+        tags:
+            - { name : twig.extension }
+    app.campaign.extension:
+        class: AppBundle\Twig\CampaignExtension
+        tags:
+            - { name : twig.extension }
+    app.authentification_handler.security:
+        class: AppBundle\Listeners\AuthenticationHandler
+        arguments:
+            - "@security.authorization_checker"
+            - "@router"
+    app.candidate.quiz.service:
+        class: AppBundle\Service\QuizCandidateService
+        arguments:
+            - "@doctrine.orm.entity_manager"

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+ {% block top_header %}
+     {% include 'default/nav_bar.html.twig' %}
+ {% endblock %}
+
+{% block main_body %}
+    <style>
+        .top-right-block{
+            float: right;
+        }
+    </style>
+    <ol class="breadcrumb">
+        <li><a href="{{ path('homepage') }}"><span class="glyphicon glyphicon-home"></span></a></li>
+        {% block breadcrumb %}
+        {% endblock %}
+    </ol>
+    <div class="top-right-block">
+        {% block top_right_block %}
+        {% endblock %}
+    </div>
+
+    <h2>
+        {% block title %}
+        {% endblock %}
+    </h2>
+
+    {% include ':default:flash_messages.html.twig' %}
+    {% block body %}
+    {% endblock %}
+
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends '@App/QuizDefinition/index.html.twig' %}
+
+ {% block sub_nab_bar %}
+     {% include '@App/QuizDefinition/sub_nav_bar.html.twig' with {'subCurrentTab' : 'questions'} %}
+ {% endblock %}
+
+{% block response_widget %}
+    <tr>
+        <td>
+            {{ form_row(form.response) }}
+        </td>
+        <td>{{ form_row(form.correct) }}</td>
+        <th>
+            <button type="button" class="btn btn-danger remove-response-line"><span class="glyphicon glyphicon-remove"></span></button>
+        </th>
+    </tr>
+{% endblock %}
+
+{% form_theme form.responses _self %}
+
+{% block quiz_main_container %}
+
+    <h2>Ajout/Modification d'une question</h2>
+
+    {{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-4">
+            {{ form_row(form.question) }}
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            {{ form_row(form.type) }}
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            {{ form_row(form.image) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            {{ form_label(form.responses) }}
+            <table id="responses-table" class="table table-hover table-stripped table-bordered">
+                <thead>
+                <tr>
+                    <th>Réponse</th>
+                    <th width="50px">Correcte</th>
+                    <th width="50px"></th>
+                </tr>
+                </thead>
+                <tbody data-prototype="{{ form_widget(form.responses.vars.prototype)|e }}"
+                       responses-count="{{ form.responses|length }}">
+                {% for r in form.responses %}
+                    {{ form_widget(r) }}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" id="new-response-text">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="new-response-correct">
+                    </td>
+                    <td>
+                        <button id="add-new-response-btn" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-4 col-sm-offset-8 col-md-2 col-md-offset-10">
+            <button type="submit" class="btn btn-success btn-block">
+                <span class="glyphicon glyphicon-ok"></span> Enregistrer
+            </button>
+        </div>
+    </div>
+
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            $('#add-new-response-btn').on('click',function(){
+
+                var response = $('#new-response-text').val();
+                var isCorrect = $('#new-response-correct').is(':checked');
+
+                if (response.trim()==''){
+                    alert('Réponse vide .. !!');
+                    return;
+                }
+
+                var responsePrototype = $('#responses-table tbody').attr('data-prototype');
+                var countResponses = parseInt($('#responses-table tbody').attr('responses-count'));
+                responsePrototype = responsePrototype.replace(/__name__/g,countResponses);
+                $('#responses-table tbody').append(responsePrototype);
+                $('#appbundle_quiz_question_responses_'+countResponses+'_response').val(response);
+                if (isCorrect){
+                    $('#appbundle_quiz_question_responses_'+countResponses+'_correct').prop('checked','checked');
+                }
+
+                countResponses++;
+                $('#responses-table tbody').attr('responses-count',countResponses);
+                $('#new-response-text').val('');
+                $('#new-response-correct').prop('checked','');
+            });
+
+            $(document).on('click','.remove-response-line',function(){
+                $(this).parentsUntil('tbody','tr').remove();
+            });
+        })
+    </script>
+{% endblock %}

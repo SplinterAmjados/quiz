@@ -1,0 +1,62 @@
+{% extends '@App/Campaign/index.html.twig' %}
+
+{% block title %}
+    Modifier la campagne
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li>
+        <a href="">Modification</a>
+    </li>
+{% endblock %}
+
+{% block top_right_block %}
+  <a href="{{ path('evaluations_campaign',{"campaign":campaign.id}) }}"><span class="glyphicon glyphicon-chevron-left"></span> Retour à la liste d'évaluations</a>
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-xs-12 col-md-4">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col-xs-12 col-md-4">
+            {{ form_row(form.session) }}
+        </div>
+        <div class="col-xs-12 col-md-4">
+            {{ form_row(form.date) }}
+        </div>
+        <div class="col-xs-12 col-md-4">
+            {{ form_row(form.universities) }}
+        </div>
+        <div class="col-xs-12 col-md-4">
+            {{ form_row(form.status) }}
+        </div>
+        <div class="col-xs-12 col-md-4">
+            {{ form_row(form.acceptedCount,{'label':'Nombre de candidats retenus'}) }}
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-4">
+            {{ form_row(form.quizzSession1,{'label':"Résultats pour la 1ere session de quiz"}) }}
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            {{ form_row(form.quizzSession2,{'label':'Résultats pour la 2ème session de quiz'}) }}
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-4 col-sm-offset-8 col-md-2 col-md-offset-10">
+            <button type="submit" class="btn btn-success btn-block">
+                <span class="glyphicon glyphicon-ok"></span> Enregistrer
+            </button>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+
+{% endblock %}
